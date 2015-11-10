@@ -1,0 +1,13 @@
+body{
+	text-align: center;
+}
+.container{
+	width: 300px;
+}
+.tile{
+	background-color: gray;
+	border-color: #FFF;
+	border-style: solid;
+	border-width: thin;
+	height: 100px;
+}
