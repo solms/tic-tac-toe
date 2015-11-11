@@ -20,7 +20,7 @@ function start(c){
 		board_arr[i] = ['','',''];
 
 	// AI plays first
-	if(c == 'X'){
+	if(c == 'O'){
 		ai_marker = 'X';
 		human_marker = 'O';
 		// Random choose either the center or one of the corners
@@ -63,8 +63,16 @@ function playerRound(){
 				Number(pos.substring(1))
 			];
 			console.log(pos);
+			board_arr[pos[0]][pos[1]] = human_marker;
+			console.log(board_arr);
+			updateDisplay();
+			checkForWinner();
 		}
 	})
+}
+
+function checkForWinner(){
+
 }
 
 function updateDisplay(){
