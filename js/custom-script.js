@@ -58,6 +58,10 @@ function playerRound(){
 	$('.tile').on('click', function(){
 		if($(this).text() == ''){
 			var pos = $(this).attr('id').replace(/tile-/,"");
+			pos = [
+				Number(pos.substring(0,1)),
+				Number(pos.substring(1))
+			];
 			console.log(pos);
 		}
 	})
