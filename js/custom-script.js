@@ -7,7 +7,7 @@ $(document).ready(function(){
 	$('.tile').prop('disabled', true);
 	$('.xo-btn').on('click', function(){
 		var choice = $(this).text();
-		$('#welcome').hide('slow');
+		$('#welcome').hide();
 		$('#board').show('slow');
 		start(choice);
 	});
@@ -46,6 +46,7 @@ function start(c){
 		}
 		updateDisplay();
 	}
+	// Human plays first
 	else{
 		ai_marker = 'O';
 		human_marker = 'X';
@@ -62,17 +63,45 @@ function playerRound(){
 				Number(pos.substring(0,1)),
 				Number(pos.substring(1))
 			];
-			console.log(pos);
 			board_arr[pos[0]][pos[1]] = human_marker;
-			console.log(board_arr);
+			$('.tile').prop('disabled', true);
 			updateDisplay();
-			checkForWinner();
+			checkForWinner(pos);
 		}
 	})
 }
 
-function checkForWinner(){
+function checkForWinner(pos){
+	var total = 0;
+	// Check adjacent tiles to last placed
+	// Can only win with last placed tile
+	// Horizontal
+	for(var i=0; i<3; i++){
+		if(board_arr[pos[0]][i] == board_arr[pos[0]][pos[1]])
+			total++;
+	}
+	if(total == 3)
+		end(board_arr[pos[0]][pos[1]]);
+	else{
+		// Check vertical
+		total = 0;
+		for(var i=0; i<3; i++){
+			if(board_arr[i][pos[1]] == board_arr[pos[0]][pos[1]])
+				total++;
+		}
+		if(total == 3)
+			end(board_arr[pos[0]][pos[1]]);
+		else{
+			// Diagonals
+			if((board_arr[0][0] == board_arr[1][1] && board_arr[1][1] == board_arr[2][2])
+				|| (board_arr[2][0] == board_arr[1][1] && board_arr[1][1] == board_arr[0][2]))
+				end(board_arr[pos[0]][pos[1]]);
+		}
+	}
+}
 
+function end(winner){
+	alert(winner + ' won!');
 }
 
 function updateDisplay(){
