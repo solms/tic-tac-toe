@@ -1,6 +1,7 @@
 var board_arr = [];
 var ai_marker;
 var human_marker;
+var ai_first;
 
 $(document).ready(function(){
 	$('#board').hide();
@@ -8,7 +9,7 @@ $(document).ready(function(){
 	$('.xo-btn').on('click', function(){
 		var choice = $(this).text();
 		$('#welcome').hide();
-		$('#board').show('slow');
+		$('#board').show();
 		start(choice);
 	});
 });
@@ -23,7 +24,11 @@ function start(c){
 	if(c == 'O'){
 		ai_marker = 'X';
 		human_marker = 'O';
-		// Random choose either the center or one of the corners
+		ai_first = true;
+		// Always choose a center spot
+		board_arr[1][1] = 'X';
+
+		/*// Random choose either the center or one of the corners
 		// Explanation: 0: center; 1-4: corners, clockwise from top-left
 		var start_pos = Math.floor(Math.random()*5);
 		console.log(start_pos);
@@ -43,7 +48,7 @@ function start(c){
 			case 4:
 				board_arr[2][2] = 'X';
 				break;
-		}
+		}*/
 		updateDisplay();
 	}
 	// Human plays first
@@ -67,8 +72,14 @@ function playerRound(){
 			$('.tile').prop('disabled', true);
 			updateDisplay();
 			checkForWinner(pos);
+			if(ai_first)
+				
 		}
 	})
+}
+
+function aiRound(){
+
 }
 
 function checkForWinner(pos){
