@@ -7,7 +7,7 @@ $(document).ready(function(){
 		start(selection);
 	});
 
-	$('.tile').click(function(){
+	$('.tile').on('click', function(){
 		if($(this).text() == ''){
 			var index = $(this).attr('id').replace(/[^0-9.]/g,'');
 			userClick(Number(index));
@@ -53,14 +53,10 @@ function changeTurns(){
 	if(turn == 'ai'){
 		turn = 'player';
 		checkForWinner(turn);
-		console.log('Tiles should be up and running...');
-		//$('.tile').prop('disabled', false);
 	}
 	else{
 		turn = 'ai';
 		checkForWinner(turn);
-		//$('.tile').prop('disabled', true);
-
 	}
 }
 
@@ -161,7 +157,7 @@ function checkForWinner(turn){
 		// Try to win
 		if(horizontal[0].indexOf(2) != -1){
 			// Check which horizontal row could be a winner
-			if(horizontal[0][0].indexOf(2)){
+			if(horizontal[0][0] == 2){
 				for(var i=0; i<3; i++){
 					if(tiles[i].value != ai && tiles[i].value != player){
 						tiles[i].value = ai;
@@ -172,7 +168,7 @@ function checkForWinner(turn){
 
 				}
 			}
-			if(horizontal[0][1].indexOf(2)){
+			if(horizontal[0][1] == 2){
 				for(var i=3; i<6; i++){
 					if(tiles[i].value != ai && tiles[i].value != player){
 						tiles[i].value = ai;
@@ -183,7 +179,7 @@ function checkForWinner(turn){
 
 				}
 			}
-			if(horizontal[0][2].indexOf(2)){
+			if(horizontal[0][2] == 2){
 				for(var i=6; i<9; i++){
 					if(tiles[i].value != ai && tiles[i].value != player){
 						tiles[i].value = ai;
@@ -196,7 +192,7 @@ function checkForWinner(turn){
 			}
 		}
 		if(vertical[0].indexOf(2) != -1){
-			if(vertical[0][0].indexOf(2)){
+			if(vertical[0][0] == 2){
 				for(var i=0; i<=6; i=i+3){
 					if(tiles[i].value != ai && tiles[i].value != player){
 						tiles[i].value = ai;
@@ -207,7 +203,7 @@ function checkForWinner(turn){
 
 				}
 			}
-			if(vertical[0][1].indexOf(2)){
+			if(vertical[0][1] == 2){
 				for(var i=1; i<=7; i=i+3){
 					if(tiles[i].value != ai && tiles[i].value != player){
 						tiles[i].value = ai;
@@ -218,7 +214,7 @@ function checkForWinner(turn){
 
 				}
 			}
-			if(vertical[0][2].indexOf(2)){
+			if(vertical[0][2] == 2){
 				for(var i=2; i<=8; i=i+3){
 					if(tiles[i].value != ai && tiles[i].value != player){
 						tiles[i].value = ai;
@@ -231,7 +227,7 @@ function checkForWinner(turn){
 			}
 		}
 		if(diagonal[0].indexOf(2) != -1){
-			if(diagonal[0][0].indexOf(2)){
+			if(diagonal[0][0] == 2){
 				for(var i=0; i<=8; i=i+4){
 					if(tiles[i].value != ai && tiles[i].value != player){
 						tiles[i].value = ai;
@@ -242,7 +238,7 @@ function checkForWinner(turn){
 
 				}
 			}
-			if(diagonal[0][1].indexOf(2)){
+			if(diagonal[0][1] == 2){
 				for(var i=2; i<=6; i=i+2){
 					if(tiles[i].value != ai && tiles[i].value != player){
 						tiles[i].value = ai;
