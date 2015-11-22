@@ -110,15 +110,18 @@ function checkForWinner(){
 			vertical[1][index]++;
 
 		// Diagonal
-		if(i==4 || i==8)
-			index = 0;
-		else if(i==2 || i==6)
-			index = 1;
-		if(tiles[i].value == ai)
-			diagonal[0][index]++;
-		else if(tiles[i].value == player)
-			diagonal[1][index]++;
-		if(i==4){
+		if(i==0 || i==8){
+			if(tiles[i].value == ai)
+				diagonal[0][0]++;
+			else if(tiles[i].value == player)
+				diagonal[1][0]++;	
+		}
+		else if(i==2 || i==6){
+			if(tiles[i].value == ai)
+				diagonal[0][1]++;
+			else if(tiles[i].value == player)
+				diagonal[1][1]++;
+		} else if(i==4){
 			if(tiles[i].value == ai){
 				diagonal[0][0]++;
 				diagonal[0][1]++;
