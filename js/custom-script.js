@@ -44,7 +44,6 @@ function start(selection){
 
 // Activate the buttons for player move
 function changeTurns(){
-	console.log($('.tile').prop('disabled'));
 	if($('.tile').prop('disabled') == true)
 		$('.tile').prop('disabled', false);
 	else
@@ -196,5 +195,4 @@ function initTiles(){
 			tiles.push(tile_obj);
 		}
 	}
-	console.log(tiles);
 }
