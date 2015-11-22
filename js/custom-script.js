@@ -7,7 +7,7 @@ $(document).ready(function(){
 		start(selection);
 	});
 
-	$('.tile').on('click', function(){
+	$('.tile').click(function(){
 		if($(this).text() == ''){
 			var index = $(this).attr('id').replace(/[^0-9.]/g,'');
 			userClick(Number(index));
@@ -16,8 +16,6 @@ $(document).ready(function(){
 });
 
 function start(selection){
-	turn = 'player';
-
 	// Initialise the board array with tile objects
 	initTiles();
 
@@ -28,9 +26,10 @@ function start(selection){
 	// Player selected O, therefor AI starts
 	if(selection == 'O'){
 		// Deactivate buttons
-		changeTurns();
+		//$('.tile').prop('disabled', true);
 		player = 'O';
 		ai = 'X';
+		turn = 'ai';
 		// AI plays corner or center tile at random
 		var start_index = Math.floor(Math.random()*5)*2;
 		tiles[start_index].value = ai;
@@ -40,23 +39,27 @@ function start(selection){
 	}
 	// Player selected X, therefor starts
 	else{
+		//$('.tile').prop('disabled', false);
 		updateBoard();
 		player = 'X';
 		ai = 'O';
+		turn = 'player';
 	}
 }
 
 // Activate the buttons for player move
 function changeTurns(){
+	console.log("Changing turns from " + turn);
 	if(turn == 'ai'){
 		turn = 'player';
 		checkForWinner(turn);
-		$('.tile').prop('disabled', false);
+		console.log('Tiles should be up and running...');
+		//$('.tile').prop('disabled', false);
 	}
 	else{
 		turn = 'ai';
 		checkForWinner(turn);
-		$('.tile').prop('disabled', true);
+		//$('.tile').prop('disabled', true);
 
 	}
 }
@@ -253,6 +256,17 @@ function checkForWinner(turn){
 		}
 		// Try to block
 		// Do something random
+		var placed = false;
+		while(!placed){
+			var pos = Math.floor(Math.random()*9);
+			if(tiles[pos].value == ''){
+				tiles[pos].value = ai;
+				placed = true;
+				updateBoard();
+				changeTurns();
+				return;
+			}
+		}
 	}	
 }
 
