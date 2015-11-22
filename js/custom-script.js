@@ -1,4 +1,4 @@
-var player, ai, board, tiles;
+var player, ai, board, tiles, turn;
 
 $(document).ready(function(){
 	$('#board').hide();
@@ -16,6 +16,8 @@ $(document).ready(function(){
 });
 
 function start(selection){
+	turn = 'player';
+
 	// Initialise the board array with tile objects
 	initTiles();
 
@@ -24,9 +26,9 @@ function start(selection){
 	$('#board').show();
 
 	// Player selected O, therefor AI starts
-	// Deactivate buttons
-	changeTurns();
 	if(selection == 'O'){
+		// Deactivate buttons
+		changeTurns();
 		player = 'O';
 		ai = 'X';
 		// AI plays corner or center tile at random
@@ -38,16 +40,25 @@ function start(selection){
 	}
 	// Player selected X, therefor starts
 	else{
-
+		updateBoard();
+		player = 'X';
+		ai = 'O';
 	}
 }
 
 // Activate the buttons for player move
 function changeTurns(){
-	if($('.tile').prop('disabled') == true)
+	if(turn == 'ai'){
+		turn = 'player';
+		checkForWinner(turn);
 		$('.tile').prop('disabled', false);
-	else
+	}
+	else{
+		turn = 'ai';
+		checkForWinner(turn);
 		$('.tile').prop('disabled', true);
+
+	}
 }
 
 // Updates the HTML display of the board
@@ -61,11 +72,11 @@ function updateBoard(){
 function userClick(index){
 	tiles[index].value = player;
 	updateBoard();
-	checkForWinner();
+	changeTurns();
 }
 
 // Checks if anyone won the game
-function checkForWinner(){
+function checkForWinner(turn){
 	// Store ai in first array, player in second
 	/*
 		EXAMPLE
@@ -133,10 +144,6 @@ function checkForWinner(){
 		}
 	}
 
-	console.log("Horizontal: " + horizontal);
-	console.log("Vertical: " + vertical);
-	console.log("Diagonal: " + diagonal);
-
 	if(horizontal[0].indexOf(3) != -1
 		|| vertical[0].indexOf(3) != -1
 		|| diagonal[0].indexOf(3) != -1)
@@ -146,6 +153,107 @@ function checkForWinner(){
 		|| diagonal[1].indexOf(3) != -1)
 		alert("Player wins!");
 	
+	// If it's the AI's turn
+	if(turn == 'ai'){
+		// Try to win
+		if(horizontal[0].indexOf(2) != -1){
+			// Check which horizontal row could be a winner
+			if(horizontal[0][0].indexOf(2)){
+				for(var i=0; i<3; i++){
+					if(tiles[i].value != ai && tiles[i].value != player){
+						tiles[i].value = ai;
+						updateBoard();
+						changeTurns();
+						return;
+					}
+
+				}
+			}
+			if(horizontal[0][1].indexOf(2)){
+				for(var i=3; i<6; i++){
+					if(tiles[i].value != ai && tiles[i].value != player){
+						tiles[i].value = ai;
+						updateBoard();
+						changeTurns();
+						return;
+					}
+
+				}
+			}
+			if(horizontal[0][2].indexOf(2)){
+				for(var i=6; i<9; i++){
+					if(tiles[i].value != ai && tiles[i].value != player){
+						tiles[i].value = ai;
+						updateBoard();
+						changeTurns();
+						return;
+					}
+
+				}
+			}
+		}
+		if(vertical[0].indexOf(2) != -1){
+			if(vertical[0][0].indexOf(2)){
+				for(var i=0; i<=6; i=i+3){
+					if(tiles[i].value != ai && tiles[i].value != player){
+						tiles[i].value = ai;
+						updateBoard();
+						changeTurns();
+						return;
+					}
+
+				}
+			}
+			if(vertical[0][1].indexOf(2)){
+				for(var i=1; i<=7; i=i+3){
+					if(tiles[i].value != ai && tiles[i].value != player){
+						tiles[i].value = ai;
+						updateBoard();
+						changeTurns();
+						return;
+					}
+
+				}
+			}
+			if(vertical[0][2].indexOf(2)){
+				for(var i=2; i<=8; i=i+3){
+					if(tiles[i].value != ai && tiles[i].value != player){
+						tiles[i].value = ai;
+						updateBoard();
+						changeTurns();
+						return;
+					}
+
+				}
+			}
+		}
+		if(diagonal[0].indexOf(2) != -1){
+			if(diagonal[0][0].indexOf(2)){
+				for(var i=0; i<=8; i=i+4){
+					if(tiles[i].value != ai && tiles[i].value != player){
+						tiles[i].value = ai;
+						updateBoard();
+						changeTurns();
+						return;
+					}
+
+				}
+			}
+			if(diagonal[0][1].indexOf(2)){
+				for(var i=2; i<=6; i=i+2){
+					if(tiles[i].value != ai && tiles[i].value != player){
+						tiles[i].value = ai;
+						updateBoard();
+						changeTurns();
+						return;
+					}
+
+				}
+			}
+		}
+		// Try to block
+		// Do something random
+	}	
 }
 
 /* Initialise the tile objects
