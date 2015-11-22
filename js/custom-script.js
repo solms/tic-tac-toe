@@ -1,4 +1,4 @@
-var player, ai, board, tiles, game_state;
+var player, ai, board, tiles;
 
 $(document).ready(function(){
 	$('#board').hide();
@@ -9,10 +9,8 @@ $(document).ready(function(){
 
 	$('.tile').on('click', function(){
 		if($(this).text() == ''){
-			var location_str = $(this).attr('id').replace(/[^0-9.]/g,'');
-			var location = [Number(location_str.substring(0,1)),
-							Number(location_str.substring(1))];
-			userClick(location);
+			var index = $(this).attr('id').replace(/[^0-9.]/g,'');
+			userClick(Number(index));
 		}
 	});
 });
@@ -29,18 +27,18 @@ function start(selection){
 	// Deactivate buttons
 	changeTurns();
 	if(selection == 'O'){
-		game_state = ['ai'];
 		player = 'O';
 		ai = 'X';
-		// AI plays the center tile
-		tiles[4].value = ai;
+		// AI plays corner or center tile at random
+		var start_index = Math.floor(Math.random()*5)*2;
+		tiles[start_index].value = ai;
 		updateBoard();
 		// Wait for player move
 		changeTurns();
 	}
 	// Player selected X, therefor starts
 	else{
-		game_state = ['player'];
+
 	}
 }
 
@@ -56,29 +54,96 @@ function changeTurns(){
 // Updates the HTML display of the board
 function updateBoard(){
 	for(var i=0; i<tiles.length; i++){
-		var tile_id = '#tile-'+tiles[i].coordinates[0]+tiles[i].coordinates[1];
-		$(tile_id).text(tiles[i].value);
+		$('#tile-'+i).text(tiles[i].value);
 	}
 }
 
 // React to a user placing a tile
-function userClick(pos){
-	// AI started (in center)
-	if(game_state[0] == 'ai'){
-		if(game_state.length == 1){
-			// Find the tile clicked object
-			var index;
-			for(var i=0; i<tiles.length; i++){
-				if(tiles[i].coordinates.equals(pos))
-					index = i;
+function userClick(index){
+	tiles[index].value = player;
+	updateBoard();
+	checkForWinner();
+}
+
+// Checks if anyone won the game
+function checkForWinner(){
+	// Store ai in first array, player in second
+	/*
+		EXAMPLE
+		[X-X
+		 OX-
+		 XOO]
+
+		 horizontal = [[2,1,1],[0,1,2]]
+		 vertical = [[2,1,1],[1,1,1]]
+		 diagonal = [[2,3],[1,0]]
+
+		 Winner, because diagonal[0][1] == 3
+
+	*/
+	var horizontal 	= [[0,0,0],[0,0,0]];
+	var vertical 	= [[0,0,0],[0,0,0]];
+	var diagonal 	= [[0,0],[0,0]];
+	var index;
+	for(var i=0; i<9; i++){
+		// Horizontal
+		if(i<3)
+			index = 0;
+		else if(i<6)
+			index = 1;
+		else
+			index = 2;
+		if(tiles[i].value == ai)
+			horizontal[0][index]++;
+		else if(tiles[i].value == player)
+			horizontal[1][index]++;
+
+		// Vertical
+		if(i==0 || i==3 || i==6)
+			index = 0;
+		else if(i==1 || i==4 || i==7)
+			index = 1;
+		else
+			index = 2;
+		if(tiles[i].value == ai)
+			vertical[0][index]++;
+		else if(tiles[i].value == player)
+			vertical[1][index]++;
+
+		// Diagonal
+		if(i==4 || i==8)
+			index = 0;
+		else if(i==2 || i==6)
+			index = 1;
+		if(tiles[i].value == ai)
+			diagonal[0][index]++;
+		else if(tiles[i].value == player)
+			diagonal[1][index]++;
+		if(i==4){
+			if(tiles[i].value == ai){
+				diagonal[0][0]++;
+				diagonal[0][1]++;
 			}
-
-		} else {
-
+			else if(tiles[i].value == player){
+				diagonal[1][0]++;
+				diagonal[1][1]++;
+			}
 		}
-	} else{
-
 	}
+
+	console.log("Horizontal: " + horizontal);
+	console.log("Vertical: " + vertical);
+	console.log("Diagonal: " + diagonal);
+
+	if(horizontal[0].indexOf(3) != -1
+		|| vertical[0].indexOf(3) != -1
+		|| diagonal[0].indexOf(3) != -1)
+		alert("AI wins!");
+	if(horizontal[1].indexOf(3) != -1
+		|| vertical[1].indexOf(3) != -1
+		|| diagonal[1].indexOf(3) != -1)
+		alert("Player wins!");
+	
 }
 
 /* Initialise the tile objects
@@ -133,32 +198,3 @@ function initTiles(){
 	}
 	console.log(tiles);
 }
-
-// CREDIT: Tomas Zato, on StackOverflow
-// http://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript
-// attach the .equals method to Array's prototype to call it on any array
-Array.prototype.equals = function (array) {
-    // if the other array is a falsy value, return
-    if (!array)
-        return false;
-
-    // compare lengths - can save a lot of time 
-    if (this.length != array.length)
-        return false;
-
-    for (var i = 0, l=this.length; i < l; i++) {
-        // Check if we have nested arrays
-        if (this[i] instanceof Array && array[i] instanceof Array) {
-            // recurse into the nested arrays
-            if (!this[i].equals(array[i]))
-                return false;       
-        }           
-        else if (this[i] != array[i]) { 
-            // Warning - two different object instances will never be equal: {x:20} != {x:20}
-            return false;   
-        }           
-    }       
-    return true;
-}
-// Hide method from for-in loops
-Object.defineProperty(Array.prototype, "equals", {enumerable: false});
