@@ -155,102 +155,11 @@ function checkForWinner(turn){
 	// If it's the AI's turn
 	if(turn == 'ai'){
 		// Try to win
-		if(horizontal[0].indexOf(2) != -1){
-			// Check which horizontal row could be a winner
-			if(horizontal[0][0] == 2){
-				for(var i=0; i<3; i++){
-					if(tiles[i].value != ai && tiles[i].value != player){
-						tiles[i].value = ai;
-						updateBoard();
-						changeTurns();
-						return;
-					}
-
-				}
-			}
-			if(horizontal[0][1] == 2){
-				for(var i=3; i<6; i++){
-					if(tiles[i].value != ai && tiles[i].value != player){
-						tiles[i].value = ai;
-						updateBoard();
-						changeTurns();
-						return;
-					}
-
-				}
-			}
-			if(horizontal[0][2] == 2){
-				for(var i=6; i<9; i++){
-					if(tiles[i].value != ai && tiles[i].value != player){
-						tiles[i].value = ai;
-						updateBoard();
-						changeTurns();
-						return;
-					}
-
-				}
-			}
-		}
-		if(vertical[0].indexOf(2) != -1){
-			if(vertical[0][0] == 2){
-				for(var i=0; i<=6; i=i+3){
-					if(tiles[i].value != ai && tiles[i].value != player){
-						tiles[i].value = ai;
-						updateBoard();
-						changeTurns();
-						return;
-					}
-
-				}
-			}
-			if(vertical[0][1] == 2){
-				for(var i=1; i<=7; i=i+3){
-					if(tiles[i].value != ai && tiles[i].value != player){
-						tiles[i].value = ai;
-						updateBoard();
-						changeTurns();
-						return;
-					}
-
-				}
-			}
-			if(vertical[0][2] == 2){
-				for(var i=2; i<=8; i=i+3){
-					if(tiles[i].value != ai && tiles[i].value != player){
-						tiles[i].value = ai;
-						updateBoard();
-						changeTurns();
-						return;
-					}
-
-				}
-			}
-		}
-		if(diagonal[0].indexOf(2) != -1){
-			if(diagonal[0][0] == 2){
-				for(var i=0; i<=8; i=i+4){
-					if(tiles[i].value != ai && tiles[i].value != player){
-						tiles[i].value = ai;
-						updateBoard();
-						changeTurns();
-						return;
-					}
-
-				}
-			}
-			if(diagonal[0][1] == 2){
-				for(var i=2; i<=6; i=i+2){
-					if(tiles[i].value != ai && tiles[i].value != player){
-						tiles[i].value = ai;
-						updateBoard();
-						changeTurns();
-						return;
-					}
-
-				}
-			}
-		}
+		if(completeThree(horizontal,vertical,diagonal,'attack'))
+			return;
 		// Try to block
+		if(completeThree(horizontal,vertical,diagonal,'block'))
+			return;
 		// Do something random
 		var placed = false;
 		while(!placed){
@@ -264,6 +173,114 @@ function checkForWinner(turn){
 			}
 		}
 	}	
+}
+
+// Try to either win by completing three in your favour
+// Or block by adding label to the end of opponent three
+function completeThree(horizontal,vertical,diagonal,move){
+	var x;
+	if(move == 'attack')
+		x = 0;
+	else if(move == 'block')
+		x = 1;
+	else
+		console.log("Error: Did not send 'attack' or 'block' to completeThree function.");
+
+	if(horizontal[x].indexOf(2) != -1){
+		// Check which horizontal row could be a winner
+		if(horizontal[x][0] == 2){
+			for(var i=0; i<3; i++){
+				if(tiles[i].value != ai && tiles[i].value != player){
+					tiles[i].value = ai;
+					updateBoard();
+					changeTurns();
+					return true;
+				}
+
+			}
+		}
+		if(horizontal[x][1] == 2){
+			for(var i=3; i<6; i++){
+				if(tiles[i].value != ai && tiles[i].value != player){
+					tiles[i].value = ai;
+					updateBoard();
+					changeTurns();
+					return true;
+				}
+
+			}
+		}
+		if(horizontal[x][2] == 2){
+			for(var i=6; i<9; i++){
+				if(tiles[i].value != ai && tiles[i].value != player){
+					tiles[i].value = ai;
+					updateBoard();
+					changeTurns();
+					return true;
+				}
+
+			}
+		}
+	}
+	if(vertical[x].indexOf(2) != -1){
+		if(vertical[x][0] == 2){
+			for(var i=0; i<=6; i=i+3){
+				if(tiles[i].value != ai && tiles[i].value != player){
+					tiles[i].value = ai;
+					updateBoard();
+					changeTurns();
+					return true;
+				}
+
+			}
+		}
+		if(vertical[x][1] == 2){
+			for(var i=1; i<=7; i=i+3){
+				if(tiles[i].value != ai && tiles[i].value != player){
+					tiles[i].value = ai;
+					updateBoard();
+					changeTurns();
+					return true;
+				}
+
+			}
+		}
+		if(vertical[x][2] == 2){
+			for(var i=2; i<=8; i=i+3){
+				if(tiles[i].value != ai && tiles[i].value != player){
+					tiles[i].value = ai;
+					updateBoard();
+					changeTurns();
+					return true;
+				}
+
+			}
+		}
+	}
+	if(diagonal[x].indexOf(2) != -1){
+		if(diagonal[x][0] == 2){
+			for(var i=0; i<=8; i=i+4){
+				if(tiles[i].value != ai && tiles[i].value != player){
+					tiles[i].value = ai;
+					updateBoard();
+					changeTurns();
+					return true;
+				}
+
+			}
+		}
+		if(diagonal[x][1] == 2){
+			for(var i=2; i<=6; i=i+2){
+				if(tiles[i].value != ai && tiles[i].value != player){
+					tiles[i].value = ai;
+					updateBoard();
+					changeTurns();
+					return true;
+				}
+
+			}
+		}
+	}
 }
 
 /* Initialise the tile objects
