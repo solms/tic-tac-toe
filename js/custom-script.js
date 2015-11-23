@@ -1,4 +1,5 @@
 var player, ai, board, tiles, turn;
+var total_moves = 0;
 
 $(document).ready(function(){
 	$('#board').hide();
@@ -25,8 +26,6 @@ function start(selection){
 
 	// Player selected O, therefor AI starts
 	if(selection == 'O'){
-		// Deactivate buttons
-		//$('.tile').prop('disabled', true);
 		player = 'O';
 		ai = 'X';
 		turn = 'ai';
@@ -39,7 +38,6 @@ function start(selection){
 	}
 	// Player selected X, therefor starts
 	else{
-		//$('.tile').prop('disabled', false);
 		updateBoard();
 		player = 'X';
 		ai = 'O';
@@ -49,6 +47,7 @@ function start(selection){
 
 // Activate the buttons for player move
 function changeTurns(){
+	total_moves++;
 	console.log("Changing turns from " + turn);
 	if(turn == 'ai'){
 		turn = 'player';
@@ -90,6 +89,9 @@ function checkForWinner(turn){
 		 Winner, because diagonal[0][1] == 3
 
 	*/
+	if(total_moves == 9)
+		alert("A draw...");
+
 	var horizontal 	= [[0,0,0],[0,0,0]];
 	var vertical 	= [[0,0,0],[0,0,0]];
 	var diagonal 	= [[0,0],[0,0]];
