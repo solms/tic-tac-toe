@@ -58,6 +58,6 @@ p{
 	width: 200px;
 	border-radius: 5px;
 }
-#play-again:hover{
+.waiter:hover{
 	cursor: pointer;
 }

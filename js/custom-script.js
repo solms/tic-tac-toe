@@ -67,9 +67,7 @@ function updateBoard(){
 	for(var i=0; i<tiles.length; i++){
 		if(tiles[i].value != ''){
 			$('#tile-'+i).html('<img class="labe" src="resources/'+tiles[i].value+'.jpg"></img>');
-			//$('#tile-'+i).text(tiles[i].value);
 		}
-		//console.log('<img class="label" src="../resources/'+tiles[i].value+'.jpg"></img>');
 	}
 }
 
@@ -152,10 +150,24 @@ function checkForWinner(turn){
 		}
 	}
 
+	// TODO: Re-do with much less code ...
 	if(horizontal[0].indexOf(3) != -1
 		|| vertical[0].indexOf(3) != -1
 		|| diagonal[0].indexOf(3) != -1){
 		finish('ai');
+		if(horizontal[0].indexOf(3) != -1){
+			var rows = [[0,1,2],[3,4,5],[6,7,8]];
+			var i = horizontal[0].indexOf(3);
+			makeRed(rows[i],'ai');
+		} else if(vertical[0].indexOf(3) != -1){
+			var rows = [[0,3,6],[1,4,7],[2,5,8]];
+			var i = vertical[0].indexOf(3);
+			makeRed(rows[i],'ai');
+		}else{
+			var rows = [[0,4,8],[2,4,6]];
+			var i = diagonal[0].indexOf(3);
+			makeRed(rows[i],'ai');
+		}
 		return;
 	}
 		
@@ -163,6 +175,19 @@ function checkForWinner(turn){
 		|| vertical[1].indexOf(3) != -1
 		|| diagonal[1].indexOf(3) != -1){
 		finish('player');
+		if(horizontal[1].indexOf(3) != -1){
+			var rows = [[0,1,2],[3,4,5],[6,7,8]];
+			var i = horizontal[1].indexOf(3);
+			makeRed(rows[i],'player');
+		} else if(vertical[1].indexOf(3) != -1){
+			var rows = [[0,3,6],[1,4,7],[2,5,8]];
+			var i = vertical[1].indexOf(3);
+			makeRed(rows[i],'player');
+		}else{
+			var rows = [[0,4,8],[2,4,6]];
+			var i = diagonal[1].indexOf(3);
+			makeRed(rows[i],'player');
+		}
 		return;
 	}
 	
@@ -189,32 +214,45 @@ function checkForWinner(turn){
 	}	
 }
 
+// Make the winning row red
+function makeRed(index, who){
+	for(var i=0; i<index.length; i++){
+		$('#tile-'+index[i]).html('<img class="labe" src="resources/'+
+									who+'-red.jpg"></img>');
+	}
+}
+
 // End the game
 function finish(condition){
-	$('#continue').show();
-	$('#continue').on('click', function(){
-		cont = true;
-		finish(condition);
-	});
+	var text;
+	if(condition == 'player'){
+		text = 'You are the winner!';
+		$('body').css({'background-color':'blue'});
+	} else if(condition == 'ai'){
+		text = 'Better luck next time!';
+		$('body').css({'background-color':'red'});
+	} else if(condition == 'draw'){
+		text = 'Stalemate ...';
+		$('body').css({'background-color':'gray'});
+	} else{
+		console.log("Error: Unexpected condition passed.");
+	}
 
 	if(cont){
 		$('#continue').hide();
-		var text;
-		if(condition == 'player'){
-			text = 'You are the winner!';
-		} else if(condition == 'ai'){
-			text = 'Better luck next time!';
-		} else if(condition == 'draw'){
-			text = 'Stalemate ...';
-		} else{
-			console.log("Error: Unexpected condition passed.");
-		}
 		$('#board').hide();
 		$('#finished').html('<h1>'+text+'</h1>');
 		$('#finished').show();
 		$('#play-again').show();
 		$('#play-again').on('click', function(){
 			document.location.reload(true);
+		});
+	}
+	else{
+		$('#continue').show();
+		$('#continue').on('click', function(){
+			cont = true;
+			finish(condition);
 		});
 	}
 }
