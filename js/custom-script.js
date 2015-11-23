@@ -227,13 +227,10 @@ function finish(condition){
 	var text;
 	if(condition == 'player'){
 		text = 'You are the winner!';
-		$('body').css({'background-color':'blue'});
 	} else if(condition == 'ai'){
 		text = 'Better luck next time!';
-		$('body').css({'background-color':'red'});
 	} else if(condition == 'draw'){
 		text = 'Stalemate ...';
-		$('body').css({'background-color':'gray'});
 	} else{
 		console.log("Error: Unexpected condition passed.");
 	}
