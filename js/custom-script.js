@@ -195,7 +195,7 @@ function finish(condition){
 	} else if(condition == 'ai'){
 		text = 'Better luck next time!';
 	} else if(condition == 'draw'){
-		text = 'Stalemate...';
+		text = 'Stalemate ...';
 	} else{
 		console.log("Error: Unexpected condition passed.");
 	}
