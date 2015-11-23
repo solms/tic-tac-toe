@@ -1,9 +1,11 @@
 var player, ai, board, tiles, turn;
 var total_moves = 0;
+var cont = false;
 
 $(document).ready(function(){
 	$('#board').hide();
 	$('#finished').hide();
+	$('#continue').hide();
 	$('#play-again').hide();
 	$('.xo-btn').on('click', function(){
 		var selection = $(this).text();
@@ -189,23 +191,32 @@ function checkForWinner(turn){
 
 // End the game
 function finish(condition){
-	var text;
-	if(condition == 'player'){
-		text = 'You are the winner!';
-	} else if(condition == 'ai'){
-		text = 'Better luck next time!';
-	} else if(condition == 'draw'){
-		text = 'Stalemate ...';
-	} else{
-		console.log("Error: Unexpected condition passed.");
-	}
-	$('#board').hide();
-	$('#finished').html('<h1>'+text+'</h1>');
-	$('#finished').show();
-	$('#play-again').show();
-	$('#play-again').on('click', function(){
-		document.location.reload(true);
+	$('#continue').show();
+	$('#continue').on('click', function(){
+		cont = true;
+		finish(condition);
 	});
+
+	if(cont){
+		$('#continue').hide();
+		var text;
+		if(condition == 'player'){
+			text = 'You are the winner!';
+		} else if(condition == 'ai'){
+			text = 'Better luck next time!';
+		} else if(condition == 'draw'){
+			text = 'Stalemate ...';
+		} else{
+			console.log("Error: Unexpected condition passed.");
+		}
+		$('#board').hide();
+		$('#finished').html('<h1>'+text+'</h1>');
+		$('#finished').show();
+		$('#play-again').show();
+		$('#play-again').on('click', function(){
+			document.location.reload(true);
+		});
+	}
 }
 
 // Try to either win by completing three in your favour
