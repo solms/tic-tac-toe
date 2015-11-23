@@ -158,15 +158,15 @@ function checkForWinner(turn){
 		if(horizontal[0].indexOf(3) != -1){
 			var rows = [[0,1,2],[3,4,5],[6,7,8]];
 			var i = horizontal[0].indexOf(3);
-			makeRed(rows[i],'ai');
+			makeRed(rows[i],ai);
 		} else if(vertical[0].indexOf(3) != -1){
 			var rows = [[0,3,6],[1,4,7],[2,5,8]];
 			var i = vertical[0].indexOf(3);
-			makeRed(rows[i],'ai');
+			makeRed(rows[i],ai);
 		}else{
 			var rows = [[0,4,8],[2,4,6]];
 			var i = diagonal[0].indexOf(3);
-			makeRed(rows[i],'ai');
+			makeRed(rows[i],ai);
 		}
 		return;
 	}
@@ -178,15 +178,15 @@ function checkForWinner(turn){
 		if(horizontal[1].indexOf(3) != -1){
 			var rows = [[0,1,2],[3,4,5],[6,7,8]];
 			var i = horizontal[1].indexOf(3);
-			makeRed(rows[i],'player');
+			makeRed(rows[i],player);
 		} else if(vertical[1].indexOf(3) != -1){
 			var rows = [[0,3,6],[1,4,7],[2,5,8]];
 			var i = vertical[1].indexOf(3);
-			makeRed(rows[i],'player');
+			makeRed(rows[i],player);
 		}else{
 			var rows = [[0,4,8],[2,4,6]];
 			var i = diagonal[1].indexOf(3);
-			makeRed(rows[i],'player');
+			makeRed(rows[i],player);
 		}
 		return;
 	}
