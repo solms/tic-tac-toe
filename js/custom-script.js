@@ -64,7 +64,7 @@ function updateBoard(){
 	for(var i=0; i<tiles.length; i++){
 		if(tiles[i].value != ''){
 			$('#tile-'+i).html('<img class="labe" src="resources/'+tiles[i].value+'.jpg"></img>');
-			$('#tile-'+i).text(tiles[i].value);
+			//$('#tile-'+i).text(tiles[i].value);
 		}
 		//console.log('<img class="label" src="../resources/'+tiles[i].value+'.jpg"></img>');
 	}
