@@ -10,7 +10,7 @@ $(document).ready(function(){
 	});
 
 	$('.tile').on('click', function(){
-		if($(this).text() == ''){
+		if($(this).text() != 'X' && $(this).text() != 'O'){
 			var index = $(this).attr('id').replace(/[^0-9.]/g,'');
 			userClick(Number(index));
 		}
@@ -62,7 +62,11 @@ function changeTurns(){
 // Updates the HTML display of the board
 function updateBoard(){
 	for(var i=0; i<tiles.length; i++){
-		$('#tile-'+i).text(tiles[i].value);
+		if(tiles[i].value != ''){
+			$('#tile-'+i).html('<img class="labe" src="resources/'+tiles[i].value+'.jpg"></img>');
+			$('#tile-'+i).text(tiles[i].value);
+		}
+		//console.log('<img class="label" src="../resources/'+tiles[i].value+'.jpg"></img>');
 	}
 }
 
