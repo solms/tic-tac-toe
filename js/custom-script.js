@@ -4,6 +4,7 @@ var total_moves = 0;
 $(document).ready(function(){
 	$('#board').hide();
 	$('#finished').hide();
+	$('#play-again').hide();
 	$('.xo-btn').on('click', function(){
 		var selection = $(this).text();
 		start(selection);
@@ -201,6 +202,10 @@ function finish(condition){
 	$('#board').hide();
 	$('#finished').html('<h1>'+text+'</h1>');
 	$('#finished').show();
+	$('#play-again').show();
+	$('#play-again').on('click', function(){
+		document.location.reload(true);
+	});
 }
 
 // Try to either win by completing three in your favour

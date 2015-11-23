@@ -30,6 +30,9 @@ p{
 	text-align: center;
 	padding: 0;
 }
+.tile:hover{
+	cursor: pointer;
+}
 
 #finished{
 	width: 100%;
@@ -45,4 +48,18 @@ p{
 .labe{
 	width: 80px;
 	height: 80px;
+}
+
+#play-again{
+	margin-top: 25px;
+	font-size: 25px;
+	border-style: solid;
+	border-style: thin;
+	border-color: red;
+	color: red;
+	width: 200px;
+	border-radius: 5px;
+}
+#play-again:hover{
+	cursor: pointer;
 }
