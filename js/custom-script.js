@@ -3,6 +3,7 @@ var total_moves = 0;
 
 $(document).ready(function(){
 	$('#board').hide();
+	$('#finished').hide();
 	$('.xo-btn').on('click', function(){
 		var selection = $(this).text();
 		start(selection);
@@ -48,7 +49,6 @@ function start(selection){
 // Activate the buttons for player move
 function changeTurns(){
 	total_moves++;
-	console.log("Changing turns from " + turn);
 	if(turn == 'ai'){
 		turn = 'player';
 		checkForWinner(turn);
@@ -90,7 +90,7 @@ function checkForWinner(turn){
 
 	*/
 	if(total_moves == 9)
-		alert("A draw...");
+		finish('draw');
 
 	var horizontal 	= [[0,0,0],[0,0,0]];
 	var vertical 	= [[0,0,0],[0,0,0]];
@@ -147,12 +147,17 @@ function checkForWinner(turn){
 
 	if(horizontal[0].indexOf(3) != -1
 		|| vertical[0].indexOf(3) != -1
-		|| diagonal[0].indexOf(3) != -1)
-		alert("AI wins!");
+		|| diagonal[0].indexOf(3) != -1){
+		finish('ai');
+		return;
+	}
+		
 	if(horizontal[1].indexOf(3) != -1
 		|| vertical[1].indexOf(3) != -1
-		|| diagonal[1].indexOf(3) != -1)
-		alert("Player wins!");
+		|| diagonal[1].indexOf(3) != -1){
+		finish('player');
+		return;
+	}
 	
 	// If it's the AI's turn
 	if(turn == 'ai'){
@@ -164,7 +169,7 @@ function checkForWinner(turn){
 			return;
 		// Do something random
 		var placed = false;
-		while(!placed){
+		while(!placed && total_moves<9){
 			var pos = Math.floor(Math.random()*9);
 			if(tiles[pos].value == ''){
 				tiles[pos].value = ai;
@@ -175,6 +180,23 @@ function checkForWinner(turn){
 			}
 		}
 	}	
+}
+
+// End the game
+function finish(condition){
+	var text;
+	if(condition == 'player'){
+		text = 'You are the winner!';
+	} else if(condition == 'ai'){
+		text = 'Better luck next time!';
+	} else if(condition == 'draw'){
+		text = 'Stalemate...';
+	} else{
+		console.log("Error: Unexpected condition passed.");
+	}
+	$('#board').hide();
+	$('#finished').html('<h1>'+text+'</h1>');
+	$('#finished').show();
 }
 
 // Try to either win by completing three in your favour
