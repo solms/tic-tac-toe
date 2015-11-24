@@ -37,7 +37,7 @@ p{
 #finished{
 	width: 100%;
 	height: 200px;
-	background-color: red;
+	background-color: gray;
 	color: white;
 	font-family: 'Bangers', cursive;
 }
